@@ -56,29 +56,12 @@ wchar_t* s2w(string &content, int length)
 	return t;
 }
 
-//void main()
-//{
-//	char picChar[10];
-//	picChar[0] = 0x1c;
-//	picChar[1] = 0x21;
-//	picChar[2] = 0x00;
-//	picChar[3] = 0x1b;
-//
-//	int size = 0;
-//	for (size_t i = 0; i < 10; i++)
-//	{
-//		if (picChar[i] == null)
-//		{ 
-//			break;
-//		}
-//		size++;
-//
-//	}
-//	cout << size << endl;
-//
-//}
-
-void containCh(string &content){
+/**
+*  功能描述: 判断string中是否包含中文
+*  @param string
+*/
+void containCh(string &content)
+{
 	int i = 0, nLen = content.length();
 
 	//char szText[] = const_cast<char>(content.data());
@@ -104,7 +87,11 @@ void containCh(string &content){
 }
 
 
-
+/**
+*  功能描述: 判断字符串是否是ip地址
+*  @param char *
+*  @return bool
+*/
 bool isIPAddress(const char *s)
 {
 	const char *pChar;
@@ -116,20 +103,17 @@ bool isIPAddress(const char *s)
 	{
 		i = sscanf_s(s, "%d.%d.%d.%d", &tmp1, &tmp2, &tmp3, &tmp4);
 
-
 		if (i != 4)
 		{
 			rv = false;
 			break;
 		}
 
-
 		if ((tmp1 > 255) || (tmp2 > 255) || (tmp3 > 255) || (tmp4 > 255))
 		{
 			rv = false;
 			break;
 		}
-
 
 		for (pChar = s; *pChar != 0; pChar++)
 		{
@@ -143,9 +127,42 @@ bool isIPAddress(const char *s)
 		break;
 	}
 
-
 	return rv;
 }
 
+/**
+*  功能描述: wchar类型转换为char类型
+*  @param wchar_t *
+*  @return char *
+*/
+char* WcharToChar(const wchar_t* wp)
+{
+	char *m_char;
+	int len = WideCharToMultiByte(CP_ACP, 0, wp, wcslen(wp), NULL, 0, NULL, NULL);
+	m_char = new char[len + 1];
+	WideCharToMultiByte(CP_ACP, 0, wp, wcslen(wp), m_char, len, NULL, NULL);
+	m_char[len] = '\0';
+	return m_char;
+}
+
+/**
+*  功能描述: string类型转换为wstring类型
+*  @param string
+*  @param wstring
+*/
+BOOL StringToWString(const std::string &str, std::wstring &wstr)
+{
+	int nLen = (int)str.length();
+	wstr.resize(nLen, L' ');
+
+	int nResult = MultiByteToWideChar(CP_ACP, 0, (LPCSTR)str.c_str(), nLen, (LPWSTR)wstr.c_str(), nLen);
+
+	if (nResult == 0)
+	{
+		return FALSE;
+	}
+
+	return TRUE;
+}
 
 

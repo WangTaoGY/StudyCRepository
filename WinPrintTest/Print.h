@@ -1,0 +1,4 @@
+
+int getPrinterDriverInfo();
+
+int getDriverTaskList();
